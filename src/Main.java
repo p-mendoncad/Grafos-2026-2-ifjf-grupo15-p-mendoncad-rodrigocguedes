@@ -86,4 +86,23 @@ public class Main {
             }
         }
     }
+
+    private static void adicionarVertice(Scanner scanner) {
+        System.out.println("\n--- Adicionar Vertice (1.1) ---");
+        System.out.print("Identificador do vertice: ");
+        String id = scanner.nextLine().trim();
+
+        if (id.isEmpty()) {
+            System.out.println("Erro: Identificador nao pode ser vazio.");
+            return;
+        }
+
+        boolean sucesso = grafo.adicionarVertice(id);
+        if (sucesso) {
+            System.out.println("Vertice '" + id + "' adicionado com sucesso.");
+        } else {
+            System.out.println("Erro: Vertice '" + id + "' ja existe no grafo.");
+        }
+    }
+
 }
