@@ -51,38 +51,48 @@ public class Main {
         }
 
         System.out.println("Ponderacao:");
-        System.out.println("1. Nao-ponderado");
-        System.out.println("2. Ponderado");
+        System.out.println("1. Nao-valorado");
+        System.out.println("2. valorado");
         System.out.print("Escolha: ");
         String opcPond = scanner.nextLine().trim();
-        boolean ponderado;
+        boolean valorado;
         if (opcPond.equals("2")) {
-            ponderado = true;
+            valorado = true;
         } else if (opcPond.equals("1")) {
-            ponderado = false;
+            valorado = false;
         } else {
             System.out.println("Opcao invalida. Operacao cancelada.");
             return;
         }
 
-        grafo = new Grafo(direcionado, ponderado);
+        grafo = new Grafo(direcionado, valorado);
         System.out.println("Grafo criado com sucesso! ["
                 + (direcionado ? "Direcionado" : "Nao-direcionado") + ", "
-                + (ponderado ? "Ponderado" : "Nao-ponderado") + "]");
+                + (valorado ? "valorado" : "Nao-valorado") + "]");
     }
 
     private static void menuGrafo(Scanner scanner) {
         boolean noMenuGrafo = true;
         while (noMenuGrafo) {
             System.out.println("\n=== SUBMENU DO GRAFO ===");
+            System.out.println("1. Adicionar Vertice (1.1)");
+            System.out.println("2. Adicionar Aresta (1.2)");
             System.out.println("0. Retornar ao Menu Principal");
             System.out.print("Escolha uma opcao: ");
 
             String opcao = scanner.nextLine().trim();
-            if (opcao.equals("0")) {
-                noMenuGrafo = false;
-            } else {
-                System.out.println("Opcao invalida. Tente novamente.");
+            switch (opcao) {
+                case "1":
+                    adicionarVertice(scanner);
+                    break;
+                case "2":
+                    adicionarAresta(scanner);
+                    break;
+                case "0":
+                    noMenuGrafo = false;
+                    break;
+                default:
+                    System.out.println("Opcao invalida. Tente novamente.");
             }
         }
     }
@@ -105,4 +115,36 @@ public class Main {
         }
     }
 
+    private static void adicionarAresta(Scanner scanner) {
+        System.out.println("\n--- Adicionar Aresta (1.2) ---");
+        System.out.print("Vertice de origem: ");
+        String origem = scanner.nextLine().trim();
+
+        System.out.print("Vertice de destino: ");
+        String destino = scanner.nextLine().trim();
+
+        if (grafo.obterVertice(origem) == null || grafo.obterVertice(destino) == null) {
+            System.out.println("Erro: Vertice de origem ou destino nao encontrado.");
+            return;
+        }
+
+        Double peso = null;
+        if (grafo.isValorado()) {
+            System.out.print("Peso da aresta: ");
+            String pesoStr = scanner.nextLine().trim();
+            try {
+                peso = Double.parseDouble(pesoStr);
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: Peso invalido. Operacao cancelada.");
+                return;
+            }
+        }
+
+        boolean sucesso = grafo.adicionarAresta(origem, destino, peso);
+        if (sucesso) {
+            System.out.println("Aresta adicionada com sucesso.");
+        } else {
+            System.out.println("Erro: Nao foi possivel adicionar a aresta.");
+        }
+    }
 }
