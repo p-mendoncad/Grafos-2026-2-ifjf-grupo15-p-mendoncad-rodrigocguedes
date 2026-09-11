@@ -58,4 +58,36 @@ public class Grafo {
 
         return true;
     }
+
+    public int obterOrdem() {
+        return vertices.size();
+    }
+
+    public int calcularGrau(Vertice vertice) {
+        int grau = 0;
+        for (Aresta aresta : vertice.getArestas()) {
+            if (aresta.getDestino().equals(vertice)) {
+                grau += 2;
+            } else {
+                grau += 1;
+            }
+        }
+        return grau;
+    }
+
+    public int calcularGrauEntrada(Vertice vertice) {
+        int grauEntrada = 0;
+        for (Vertice v : vertices.values()) {
+            for (Aresta aresta : v.getArestas()) {
+                if (aresta.getDestino().equals(vertice)) {
+                    grauEntrada++;
+                }
+            }
+        }
+        return grauEntrada;
+    }
+
+    public int calcularGrauSaida(Vertice vertice) {
+        return vertice.getArestas().size();
+    }
 }

@@ -77,6 +77,7 @@ public class Main {
             System.out.println("\n=== SUBMENU DO GRAFO ===");
             System.out.println("1. Adicionar Vertice (1.1)");
             System.out.println("2. Adicionar Aresta (1.2)");
+            System.out.println("3. Informacoes do Grafo (1.6)");
             System.out.println("0. Retornar ao Menu Principal");
             System.out.print("Escolha uma opcao: ");
 
@@ -87,6 +88,9 @@ public class Main {
                     break;
                 case "2":
                     adicionarAresta(scanner);
+                    break;
+                case "3":
+                    menuInformacoes(scanner);
                     break;
                 case "0":
                     noMenuGrafo = false;
@@ -145,6 +149,58 @@ public class Main {
             System.out.println("Aresta adicionada com sucesso.");
         } else {
             System.out.println("Erro: Nao foi possivel adicionar a aresta.");
+        }
+    }
+
+    private static void menuInformacoes(Scanner scanner) {
+        boolean noMenuInfo = true;
+        while (noMenuInfo) {
+            System.out.println("\n=== INFORMACOES DO GRAFO (1.6) ===");
+            System.out.println("1. Ordem do Grafo (1.6.1)");
+            System.out.println("2. Grau dos Vertices (1.6.2)");
+            System.out.println("0. Voltar ao Menu do Grafo");
+            System.out.print("Escolha uma opcao: ");
+
+            String opcao = scanner.nextLine().trim();
+            switch (opcao) {
+                case "1":
+                    exibirOrdem();
+                    break;
+                case "2":
+                    exibirGraus();
+                    break;
+                case "0":
+                    noMenuInfo = false;
+                    break;
+                default:
+                    System.out.println("Opcao invalida. Tente novamente.");
+            }
+        }
+    }
+
+    private static void exibirOrdem() {
+        System.out.println("\n--- Ordem do Grafo (1.6.1) ---");
+        System.out.println("Ordem (|V|): " + grafo.obterOrdem());
+    }
+
+    private static void exibirGraus() {
+        System.out.println("\n--- Grau dos Vertices (1.6.2) ---");
+        if (grafo.getVertices().isEmpty()) {
+            System.out.println("Nenhum vertice cadastrado no grafo.");
+            return;
+        }
+
+        if (grafo.isDirecionado()) {
+            for (Vertice v : grafo.getVertices()) {
+                int inDegree = grafo.calcularGrauEntrada(v);
+                int outDegree = grafo.calcularGrauSaida(v);
+                System.out.println("Vertice " + v.getId() + ": d-(" + v.getId() + ") = " + inDegree + ", d+(" + v.getId() + ") = " + outDegree);
+            }
+        } else {
+            for (Vertice v : grafo.getVertices()) {
+                int grau = grafo.calcularGrau(v);
+                System.out.println("Vertice " + v.getId() + ": d(" + v.getId() + ") = " + grau);
+            }
         }
     }
 }
